@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 # ------------------[ SETTINGS ]------------------
-ANCHOR_NUMBER           = 7     # number of anchors
+ANCHOR_NUMBER           = 4     # number of anchors
 ANCHOR_ERROR_MAGNITUDE  = 0.1   # evenly distributed from +-ANCHOR_ERROR_MAGNITUDE
 
 
@@ -15,8 +15,10 @@ ANCHOR_ERROR_MAGNITUDE  = 0.1   # evenly distributed from +-ANCHOR_ERROR_MAGNITU
 # >> tag        : real position of tag
 anchor_err_mag  = ANCHOR_ERROR_MAGNITUDE
 anchor_num      = ANCHOR_NUMBER
-anchor_grid_x   = np.random.randint(1, anchor_num + 1)
-anchor_grid_y   = int(np.ceil(anchor_num/anchor_grid_x))
+anchor_grid_x   = 2
+anchor_grid_y   = 2
+# anchor_grid_x   = np.random.randint(1, anchor_num + 1)
+# anchor_grid_y   = int(np.ceil(anchor_num/anchor_grid_x))
 anchors         = []
 
 tag = [float(anchor_grid_x)*np.random.rand(), float(anchor_grid_y)*np.random.rand()]
