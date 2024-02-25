@@ -1,1 +1,4 @@
 app/web/node_modules
+
+app/firmware/.pio
+app/firmware/.vscode/
