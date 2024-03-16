@@ -1,0 +1,9 @@
+FROM docker.io/node:21
+
+COPY ./app/src/uwbloc_interfaces/app /app
+
+WORKDIR /app
+
+RUN npm install
+
+CMD node .

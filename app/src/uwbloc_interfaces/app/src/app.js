@@ -1,6 +1,6 @@
 const path      = require('path')
 const express   = require('express')
-const rclga     = require('./js/rcl-gateaway')
+// const rclga     = require('./js/rcl-gateaway')
 
 const app       = express()
 const port      = 3000
@@ -13,6 +13,9 @@ app.use(express.json())
 
 
 
-app.get('/', (req, req) => {
-
+app.get('/', (req, res) => {
+    res.send("Hello")
 })
+
+
+app.listen(port)
