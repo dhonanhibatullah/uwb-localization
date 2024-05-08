@@ -1,0 +1,18 @@
+services:
+  
+  uwbloc-mqtt:
+    container_name: uwbloc-mqtt
+    image: docker.io/eclipse-mosquitto
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    ports:
+      - "1883:1883"
+  
+  uwbloc-os:
+    container_name: uwbloc-os
+    image: uwbloc-os
+    volumes:
+      - ./src:/uwbloc-os/src
+    ports:
+      - "1883:1883"
+      - "3000:3000"

@@ -1,7 +1,4 @@
-app/web/node_modules
-
-app/firmware/.pio
-app/firmware/.vscode/
-app/ros/build/
-app/ros/install/
-app/ros/log/
+.vscode/
+build/
+install/
+log/
