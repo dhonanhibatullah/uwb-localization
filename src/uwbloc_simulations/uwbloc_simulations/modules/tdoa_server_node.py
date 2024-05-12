@@ -24,8 +24,9 @@ class TDOAServerNode(Node):
         self.ANCHOR_LIST    = self.NETWORK_INFO['anchor_list']
         self.MASTER_CLOCK   = self.NETWORK_INFO['master_clock']
 
-        self.anchor_set     = set(())
-        self.anchor_data    = dict(())
+        self.anchor_set         = set(())
+        self.anchor_data        = dict(())
+        self.sorted_tag_data    = dict(())
 
         self.server_reply_sub = self.create_subscription(
             msg_type    = uwbloc_interfaces.AnchorInfo,
@@ -47,6 +48,39 @@ class TDOAServerNode(Node):
 
 
 
+    def sortData(self) -> None:
+        self.sorted_tag_data.clear()
+
+        for tag in self.TAG_LIST:
+            max_len = 0
+            ref_sn  = None
+            tag_sn  = []
+            tag_ts  = []
+
+            for anchor in self.ANCHOR_LIST:       
+                tag_sn.append(iter(self.anchor_data[anchor[0]]['tag_data'][tag[0]][0]))
+                tag_ts.append(iter(self.anchor_data[anchor[0]]['tag_data'][tag[0]][1]))
+
+                length = len(self.anchor_data[anchor[0]]['tag_data'][tag[0]][0])
+                if length > max_len:
+                    max_len = length
+                    ref_sn  = self.anchor_data[anchor[0]]['tag_data'][tag[0]][0].copy()
+
+            for sn in ref_sn:
+                is_complete = True
+
+                for sn_tag in tag_sn:
+                    if sn != next(sn_tag):
+                        is_complete = False
+                        break
+
+                if is_complete:
+                    temp_data = []
+                    for ts_tag in tag_ts:
+                        temp_data.append(next(ts_tag))
+
+
+
     def isAnchorDataCompleted(self) -> bool:
         for anchor in self.ANCHOR_LIST:
             if not (anchor[0] in self.anchor_set):
@@ -65,9 +99,7 @@ class TDOAServerNode(Node):
             
         if self.isAnchorDataCompleted():
             self.get_logger().info(f'ALL DATA RECEIVED!')
-
-            for anchor in self.ANCHOR_LIST:
-                pass
+            # self.sortData()
 
 
     

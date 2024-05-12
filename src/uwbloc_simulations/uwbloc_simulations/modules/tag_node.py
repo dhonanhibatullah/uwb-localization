@@ -26,6 +26,12 @@ class TagNode(Node):
         self.sn         = 0
         self.position   = self.INITIAL_POSITION
 
+        self.actual_pos_pub = self.create_publisher(
+            msg_type    = uwbloc_interfaces.Position3D,
+            topic       = f'{self.ID}/actual_position',
+            qos_profile = 1000
+        )
+
         self.broadcast_pub = self.create_publisher(
             msg_type    = uwbloc_interfaces.TagBroadcastTX,
             topic       = 'medium/sub/tag_broadcast',
@@ -47,6 +53,10 @@ class TagNode(Node):
             self.INITIAL_POSITION[1] + self.MOVING_RADIUS*np.sin(self.MOVING_OMEGA*self.timer),
             self.INITIAL_POSITION[2]
         ]
+
+        pub_msg         = uwbloc_interfaces.Position3D()
+        pub_msg.pos_3d  = self.position.copy()
+        self.actual_pos_pub.publish(pub_msg)
 
 
 

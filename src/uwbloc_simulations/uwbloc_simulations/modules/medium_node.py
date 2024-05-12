@@ -85,10 +85,10 @@ class MediumNode(Node):
                     (pos[0] - anchor[1][0])**2.0 + 
                     (pos[1] - anchor[1][1])**2.0 +
                     (pos[2] - anchor[1][2])**2.0
-                ) / self.SCALED_C
+                ) / self.SCALED_C + 3.3e-7*np.random.rand()
             )
 
-        return tof
+        return tof 
     
 
 
@@ -98,7 +98,7 @@ class MediumNode(Node):
             (pos[1] - self.MASTER_CLOCK[1])**2.0 +
             (pos[2] - self.MASTER_CLOCK[2])**2.0
         ) / self.SCALED_C
-        return tof
+        return tof + 3.3e-7*np.random.rand()
 
 
 

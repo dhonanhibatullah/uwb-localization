@@ -95,9 +95,10 @@ class AnchorNode(Node):
         if self.calibrated and self.synchronized:
             if not (msg.id in self.tag_set):
                 self.tag_set.add(msg.id)
-                self.tag_data.update({msg.id: []})
+                self.tag_data.update({msg.id: [[],[]]})
 
-            self.tag_data[msg.id].append([msg.sn, rx_time])
+            self.tag_data[msg.id][0].append(msg.sn)
+            self.tag_data[msg.id][1].append(rx_time)
 
 
 
