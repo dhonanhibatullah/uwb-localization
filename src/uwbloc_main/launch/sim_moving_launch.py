@@ -6,16 +6,16 @@ import json
 
 SCALED_SPEED_OF_LIGHT       = 299792.458
 SCALE_RATIO                 = 1000.0
-SYNC_PERIOD                 = 0.35
+SYNC_PERIOD                 = 0.15
 TAG_BROADCAST_PERIOD        = 0.05
-ANCHOR_CALIBRATION_PERIOD   = 0.15
+ANCHOR_CALIBRATION_PERIOD   = 0.06
 ANCHOR_CALIBRATION_CNT      = 40
-SERVER_CALL_PERIOD          = 0.4
+SERVER_CALL_PERIOD          = 0.2
 NETWORK_INFO = {
     'master_clock': [2.5, 2.5, 0.2],
     'tag_list': [
-        ['TAG_0', [3.0, 4.5, 0.8], 2*np.pi*0.5, 4.2],
-        ['TAG_1', [1.0, 1.0, 0.3], 2*np.pi*0.8, 3.1]
+        ['TAG_0', [3.0, 4.5, 0.8], 2*np.pi*0.05, 4.2],
+        ['TAG_1', [1.0, 1.0, 0.3], 2*np.pi*0.08, 3.1]
     ],
     'anchor_list': [
         ['ANCHOR_0', [0.0, 0.0, 0.0], 0.01],

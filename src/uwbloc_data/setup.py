@@ -2,7 +2,8 @@ from setuptools import setup
 
 package_name = 'uwbloc_data'
 package_list = [
-    package_name
+    package_name,
+    package_name + '/modules'
 ]
 
 setup(
@@ -22,6 +23,7 @@ setup(
     tests_require       = ['pytest'],
     entry_points        = {
         'console_scripts': [
+            'sim_lattice_record = uwbloc_data.sim_lattice_record:main'
         ],
     },
 )

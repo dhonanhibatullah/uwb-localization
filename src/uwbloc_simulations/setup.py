@@ -27,6 +27,7 @@ setup(
             'master_clock = uwbloc_simulations.master_clock:main',
             'anchor = uwbloc_simulations.anchor:main',
             'tag = uwbloc_simulations.tag:main',
+            'tag_lattice = uwbloc_simulations.tag_lattice:main',
             'tdoa_server = uwbloc_simulations.tdoa_server:main'
         ],
     },

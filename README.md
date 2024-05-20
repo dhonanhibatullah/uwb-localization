@@ -1,5 +1,5 @@
 # **UWB Localization**
-This project consists of web app, firmwares, and the ideas behind my thesis work on UWB localization.
+This project consists of app, firmwares, and the ideas behind my thesis work on UWB localization.
 
 ## **[1] app/firmware**
 The firmware inside this directory can be compiled via Arduino IDE or Arduino CLI. There are several libraries need to be installed before compiling, such as:
