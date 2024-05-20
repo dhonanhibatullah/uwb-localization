@@ -15,7 +15,7 @@ TRIAL_PER_POSITION          = 18
 NETWORK_INFO = {
     'master_clock': [2.5, 2.5, 1.0],
     'tag_list': [
-        ['TAG_0', [-3.3, 8.2], [-3.3, 8.2], 0.5, 0.17]
+        ['TAG_0', [-4.3, 9.7], [-4.3, 9.7], 0.5, 0.17]
     ],
     'anchor_list': [
         ['ANCHOR_0', [0.0, 0.0, 0.0], 0.01],
