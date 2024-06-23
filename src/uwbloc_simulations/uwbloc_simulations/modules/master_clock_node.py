@@ -52,7 +52,7 @@ class MasterClockNode(Node):
 
 
     def syncTimerCallback(self) -> None:
-        tx_time = time.time_ns()*1e-9
+        tx_time = time.time_ns()*1e-3
 
         pub_msg         = uwbloc_interfaces.MasterClockSyncTX()
         pub_msg.sync_ts = tx_time

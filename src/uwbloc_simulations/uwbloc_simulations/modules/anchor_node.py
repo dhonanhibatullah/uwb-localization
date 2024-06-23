@@ -90,14 +90,16 @@ class AnchorNode(Node):
 
     
     def tagBroadcastSubCallback(self, msg:uwbloc_interfaces.TagBroadcastRX) -> None:
-        rx_time = time.time_ns()*1e-9 + msg.tof[self.INDEX]
+        # rx_time = time.time_ns()*1e-3 + msg.tof[self.INDEX]
+        rx_time = msg.tof[self.INDEX]
 
         if self.calibrated and self.synchronized:
             if not (msg.id in self.tag_set):
                 self.tag_set.add(msg.id)
-                self.tag_data.update({msg.id: []})
+                self.tag_data.update({msg.id: [[],[]]})
 
-            self.tag_data[msg.id].append([msg.sn, rx_time])
+            self.tag_data[msg.id][0].append(msg.sn)
+            self.tag_data[msg.id][1].append(rx_time)
 
 
 
@@ -124,7 +126,7 @@ class AnchorNode(Node):
 
 
     def masterSyncSubCallback(self, msg:uwbloc_interfaces.MasterClockSyncRX) -> None:
-        rx_time = time.time_ns()*1e-9 + msg.tof[self.INDEX]
+        rx_time = time.time_ns()*1e-3 + msg.tof[self.INDEX]
 
         if self.calibrated:
             if not self.synchronized:
@@ -136,19 +138,21 @@ class AnchorNode(Node):
 
             else:
                 self.data_exist = True
+
+                self.sync_time.pop(0)
+                self.machine_time.pop(0)
+                self.sync_time.append(msg.sync_ts + self.master_clock_tof)
+                self.machine_time.append(rx_time)
                 
                 self.server_msg.clear()
                 self.server_msg.update({'sync_time': self.sync_time.copy()})
                 self.server_msg.update({'machine_time': self.machine_time.copy()})
                 self.server_msg.update({'tag_data': self.tag_data.copy()})
 
-                self.sync_time.pop(0)
-                self.machine_time.pop(0)
                 self.tag_data.clear()
                 self.tag_set.clear()
 
-                self.sync_time.append(msg.sync_ts + self.master_clock_tof)
-                self.machine_time.append(rx_time)
+                # self.get_logger().info('synchronized!')
 
 
 

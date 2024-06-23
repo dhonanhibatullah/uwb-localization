@@ -76,28 +76,28 @@ class MediumNode(Node):
 
 
 
-    def calculateToF2Anchors(self, pos:list) -> list:
+    def calculateToF2Anchors(self, pos:list, noise:bool=True) -> list:
         tof = []
 
         for anchor in self.ANCHOR_LIST:
             tof.append(
-                np.sqrt(
+                (np.sqrt(
                     (pos[0] - anchor[1][0])**2.0 + 
                     (pos[1] - anchor[1][1])**2.0 +
                     (pos[2] - anchor[1][2])**2.0
-                ) / self.SCALED_C
+                ) / self.SCALED_C + (6.6e-7*np.random.rand() if noise else 0.0))*1e+6
             )
 
-        return tof
+        return tof 
     
 
 
-    def calculateToF2MasterClock(self, pos:list) -> float:
-        tof = np.sqrt(
+    def calculateToF2MasterClock(self, pos:list, noise:bool=True) -> float:
+        tof = (np.sqrt(
             (pos[0] - self.MASTER_CLOCK[0])**2.0 + 
             (pos[1] - self.MASTER_CLOCK[1])**2.0 +
             (pos[2] - self.MASTER_CLOCK[2])**2.0
-        ) / self.SCALED_C
+        ) / self.SCALED_C + (6.6e-8*np.random.rand() if noise else 0.0))*1e+6
         return tof
 
 
@@ -106,7 +106,7 @@ class MediumNode(Node):
         pub_msg     = uwbloc_interfaces.TagBroadcastRX()
         pub_msg.id  = msg.id
         pub_msg.sn  = msg.sn
-        pub_msg.tof = self.calculateToF2Anchors(msg.pos)
+        pub_msg.tof = self.calculateToF2Anchors(msg.pos, noise=True)
 
         self.tag_broadcast_pub.publish(pub_msg)
 
@@ -115,7 +115,7 @@ class MediumNode(Node):
     def calibPollSubCallback(self, msg:uwbloc_interfaces.CalibrationPollTX) -> None:
         pub_msg     = uwbloc_interfaces.CalibrationPollRX()
         pub_msg.id  = msg.id
-        pub_msg.tof = self.calculateToF2MasterClock(msg.pos)
+        pub_msg.tof = self.calculateToF2MasterClock(msg.pos, noise=False)
 
         self.calib_poll_pub.publish(pub_msg)
 
@@ -134,6 +134,6 @@ class MediumNode(Node):
     def masterSyncSubCallback(self, msg:uwbloc_interfaces.MasterClockSyncTX) -> None:
         pub_msg         = uwbloc_interfaces.MasterClockSyncRX()
         pub_msg.sync_ts = msg.sync_ts
-        pub_msg.tof     = self.calculateToF2Anchors(msg.pos)
+        pub_msg.tof     = self.calculateToF2Anchors(msg.pos, noise=False)
 
         self.master_sync_pub.publish(pub_msg)

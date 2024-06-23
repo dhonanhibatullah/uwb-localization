@@ -6,16 +6,16 @@ import json
 
 SCALED_SPEED_OF_LIGHT       = 299792.458
 SCALE_RATIO                 = 1000.0
-SYNC_PERIOD                 = 0.35
+SYNC_PERIOD                 = 0.15
 TAG_BROADCAST_PERIOD        = 0.05
-ANCHOR_CALIBRATION_PERIOD   = 0.15
+ANCHOR_CALIBRATION_PERIOD   = 0.06
 ANCHOR_CALIBRATION_CNT      = 40
-SERVER_CALL_PERIOD          = 0.4
+SERVER_CALL_PERIOD          = 0.2
+TRIAL_PER_POSITION          = 18
 NETWORK_INFO = {
-    'master_clock': [2.5, 2.5, 0.2],
+    'master_clock': [2.5, 2.5, 1.0],
     'tag_list': [
-        ['TAG_0', [3.0, 4.5, 0.8], 2*np.pi*0.5, 4.2],
-        ['TAG_1', [1.0, 1.0, 0.3], 2*np.pi*0.8, 3.1]
+        ['TAG_0', [-4.3, 9.7], [-4.3, 9.7], 0.5, 0.17]
     ],
     'anchor_list': [
         ['ANCHOR_0', [0.0, 0.0, 0.0], 0.01],
@@ -29,6 +29,18 @@ NETWORK_INFO = {
 
 def generate_launch_description():
     nodes = []
+
+    nodes.append(
+        Node(
+            package     = 'uwbloc_data',
+            executable  = 'sim_lattice_record',
+            name        = 'RECORDER',
+            parameters  = [
+                {'filename': '/home/dhonan/Workspace/uwb-localization/src/uwbloc_data/data/lattice_noise1.yaml'},
+                {'trial': TRIAL_PER_POSITION}
+            ]
+        )
+    )
 
     nodes.append(
         Node(
@@ -73,14 +85,16 @@ def generate_launch_description():
         nodes.append(
             Node(
                 package     = 'uwbloc_simulations',
-                executable  = 'tag',
+                executable  = 'tag_lattice',
                 name        = tag[0],
                 parameters  = [
                     {'id': tag[0]},
                     {'broadcast_period': TAG_BROADCAST_PERIOD},
-                    {'initial_position': tag[1]},
-                    {'moving_omega': tag[2]},
-                    {'moving_radius': tag[3]}
+                    {'grid_x': tag[1]},
+                    {'grid_y': tag[2]},
+                    {'height': tag[3]},
+                    {'step': tag[4]},
+                    {'trial': TRIAL_PER_POSITION}
                 ]
             )
         )
